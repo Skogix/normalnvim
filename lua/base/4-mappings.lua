@@ -1644,9 +1644,11 @@ function M.lsp_mappings(client, bufnr)
     end
   end
 
+
+
+
   return lsp_mappings
 end
-
 
 -- A function we call from the script to start lsp.
 -- @return table lsp_mappings #

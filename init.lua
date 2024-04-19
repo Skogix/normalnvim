@@ -2,7 +2,7 @@
 -- ---------------------------------------
 -- This is the entry point of your config.
 -- ---------------------------------------
-
+hatns
 -- EVERY TIME NEOVIM OPENS:
 -- Compile lua to bytecode if the nvim version supports it.
 if vim.loader and vim.fn.has "nvim-0.9.1" == 1 then vim.loader.enable() end
@@ -29,3 +29,13 @@ if base.default_colorscheme then
     )
   end
 end
+
+
+vim.keymap.set("n", "<leader>xx", function() require("trouble").toggle() end)
+vim.keymap.set("n", "<leader>xw", function() require("trouble").toggle("workspace_diagnostics") end)
+vim.keymap.set("n", "<leader>xd", function() require("trouble").toggle("document_diagnostics") end)
+vim.keymap.set("n", "<leader>xq", function() require("trouble").toggle("quickfix") end)
+vim.keymap.set("n", "<leader>xl", function() require("trouble").toggle("loclist") end)
+vim.keymap.set("n", "gR", function() require("trouble").toggle("lsp_references") end)
+
+
