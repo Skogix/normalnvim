@@ -37,6 +37,7 @@
 --       -> ask chatgpt                        [neural]
 --       -> hop.nvim
 --       -> mason-lspconfig.nvim               [lsp]
+--       -> harpoon                            [bookmarks]
 
 --
 --   KEYBINDINGS REFERENCE
@@ -88,6 +89,8 @@ local icons = {
 }
 
 -- standard Operations -----------------------------------------------------
+
+maps.n[";"] = { ":", expr = false }
 maps.n["j"] =
 { "v:count == 0 ? 'gj' : 'j'", expr = true, desc = "Move cursor down" }
 maps.n["k"] =
@@ -130,10 +133,10 @@ maps.n["<Tab>"] = {
 --      is the keycode for scrolling, and remapping it would break it.
 if not is_android then
   -- only useful when the option clipboard is commented on ./1-options.lua
-  maps.n["<C-y>"] = { '"+y<esc>', desc = "Copy to cliboard" }
-  maps.x["<C-y>"] = { '"+y<esc>', desc = "Copy to cliboard" }
-  maps.n["<C-d>"] = { '"+y<esc>dd', desc = "Copy to clipboard and delete line" }
-  maps.x["<C-d>"] = { '"+y<esc>dd', desc = "Copy to clipboard and delete line" }
+  -- maps.n["<C-y>"] = { '"+y<esc>', desc = "Copy to cliboard" }
+  -- maps.x["<C-y>"] = { '"+y<esc>', desc = "Copy to cliboard" }
+  -- maps.n["<C-d>"] = { '"+y<esc>dd', desc = "Copy to clipboard and delete line" }
+  -- maps.x["<C-d>"] = { '"+y<esc>dd', desc = "Copy to clipboard and delete line" }
   maps.n["<C-p>"] = { '"+p<esc>', desc = "Paste from clipboard" }
 end
 
@@ -305,13 +308,13 @@ maps.n["<leader>c"] = { -- Close buffer keeping the window.
 --   function() vim.cmd "wa" end,
 --   desc = "Write all changed buffers",
 -- }
-maps.n["H"] = {
+maps.n["L"] = {
   function()
     require("heirline-components.buffer").nav(vim.v.count > 0 and vim.v.count or 1)
   end,
   desc = "Next buffer",
 }
-maps.n["L"] = {
+maps.n["H"] = {
   function()
     require("heirline-components.buffer").nav(-(vim.v.count > 0 and vim.v.count or 1))
   end,
@@ -861,6 +864,7 @@ if is_available "telescope.nvim" then
     function() require("telescope.builtin").resume() end,
     desc = "Resume previous search",
   }
+
   maps.n["<leader>f'"] = {
     function() require("telescope.builtin").marks() end,
     desc = "Find marks",
@@ -892,16 +896,16 @@ if is_available "telescope.nvim" then
     desc = "Find commands",
   }
   -- Let's disable this. It is way too imprecise. Use rnvimr instead.
-  -- maps.n["<leader>ff"] = {
-  --   function()
-  --     require("telescope.builtin").find_files { hidden = true, no_ignore = true }
-  --   end,
-  --   desc = "Find all files",
-  -- }
-  -- maps.n["<leader>fF"] = {
-  --   function() require("telescope.builtin").find_files() end,
-  --   desc = "Find files (no hidden)",
-  -- }
+  maps.n["<leader>ff"] = {
+    function()
+      require("telescope.builtin").find_files { hidden = true, no_ignore = true }
+    end,
+    desc = "Find all files",
+  }
+  maps.n["<leader>fF"] = {
+    function() require("telescope.builtin").find_files() end,
+    desc = "Find files (no hidden)",
+  }
   maps.n["<leader>fh"] = {
     function() require("telescope.builtin").help_tags() end,
     desc = "Find help",
@@ -941,7 +945,7 @@ if is_available "telescope.nvim" then
     end,
     desc = "Find themes",
   }
-  maps.n["<leader>ff"] = {
+  maps.n["<leader>fw"] = {
     function()
       require("telescope.builtin").live_grep {
         additional_args = function(args)
@@ -1332,14 +1336,14 @@ if is_available "hop.nvim" then
   -- Note that Even though we are using ENTER for hop, you can still select items
   -- from special menus like 'quickfix', 'q?' and 'q:' with <C+ENTER>.
 
-  maps.n["<C-m>"] = { -- The terminal undersand C-m and ENTER as the same key.
+  maps.n["//"] = { -- The terminal undersand C-m and ENTER as the same key.
     function()
       require("hop")
       vim.cmd("silent! HopWord")
     end,
     desc = "Hop to word",
   }
-  maps.x["<C-m>"] = { -- The terminal undersand C-m and ENTER as the same key.
+  maps.x["//"] = { -- The terminal undersand C-m and ENTER as the same key.
     function()
       require("hop")
       vim.cmd("silent! HopWord")
@@ -1367,6 +1371,7 @@ function M.lsp_mappings(client, bufnr)
   end
 
   local lsp_mappings = require("base.utils").get_mappings_template()
+  lsp_mappings.n["<leader>ld"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
   lsp_mappings.n["<leader>ld"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
   lsp_mappings.n["[d"] = { function() vim.diagnostic.goto_prev() end, desc = "Previous diagnostic" }
   lsp_mappings.n["]d"] = { function() vim.diagnostic.goto_next() end, desc = "Next diagnostic" }
@@ -1641,6 +1646,10 @@ function M.lsp_mappings(client, bufnr)
 
   return lsp_mappings
 end
+
+
+-- A function we call from the script to start lsp.
+-- @return table lsp_mappings #
 
 utils.set_mappings(maps)
 return M

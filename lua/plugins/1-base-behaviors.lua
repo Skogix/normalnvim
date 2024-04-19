@@ -23,6 +23,8 @@
 --       -> lsp_signature.nvim     [auto params help]
 --       -> nvim-lightbulb         [lightbulb for code actions]
 --       -> distroupdate.nvim      [distro update]
+--       -> harpoon                [theprimeagen]
+--       -> luarocks               [luarocks]
 
 local is_windows = vim.fn.has('win32') == 1         -- true if on windows
 local is_android = vim.fn.isdirectory('/data') == 1 -- true if on android
@@ -706,6 +708,44 @@ return {
         end
       }
     end
+  },
+
+  --  luarocks [luarocks]
+  --
+  {
+    'vhyrro/luarocks.nvim',
+    priority = 1000,
+    config = true,
+  },
+
+  --  harpoon [swap between bookmarks]
+  --  https://github.com/ThePrimeagen/harpoon
+  {
+    "ThePrimeagen/harpoon",
+    opts = {
+      -- sets the marks upon calling `toggle` on the ui, instead of require `:w`.
+      save_on_toggle = false,
+
+      -- saves the harpoon file upon every change. disabling is unrecommended.
+      save_on_change = true,
+
+      -- sets harpoon to run the command immediately as it's passed to the terminal when calling `sendCommand`.
+      enter_on_sendcmd = false,
+
+      -- closes any tmux windows harpoon that harpoon creates when you close Neovim.
+      tmux_autoclose_windows = false,
+
+      -- filetypes that you want to prevent from adding to the harpoon list menu.
+      excluded_filetypes = { "harpoon" },
+
+      -- set marks specific to each git branch inside git repository
+      mark_branch = false,
+
+      -- enable tabline with harpoon marks
+      tabline = false,
+      tabline_prefix = "   ",
+      tabline_suffix = "   ",
+    }
   },
 
 } -- end of return
