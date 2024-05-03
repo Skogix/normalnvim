@@ -13,15 +13,17 @@ local modules = {
   ['core.dirman'] = {
     config = {
       workspaces = {
-        Notes = '~/wiki',
-        Work = '~/work',
+        notes = '~/wiki',
+        work = '~/work',
       },
+      default_workspace = "notes",
     },
   },
 }
 local M = {
   'nvim-neorg/neorg',
   ft = 'norg',
+  version = "*",
   dependencies = {
     'luarocks.nvim', -- this is it.
     -- "nvim-treesitter/nvim-treesitter",
@@ -34,5 +36,28 @@ local M = {
   opts = {
     load = modules,
   },
+  config = function()
+    require("neorg").setup {
+      load = {
+        ["core.defaults"] = {},
+        -- ["core.concealer"] = {},
+        ["core.concealer"] = {
+            config = { -- We added a `config` table!
+                icon_preset = "varied", -- And we set our option here.
+            },
+        },
+        ["core.dirman"] = {
+          config = {
+            workspaces = {
+              notes = "~/notes",
+            },
+            default_workspace = "notes",
+          },
+        },
+      },
+    }
+    vim.wo.foldlevel = 99
+    vim.wo.conceallevel = 2
+  end,
 }
 return M
