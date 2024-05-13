@@ -40,18 +40,15 @@ local M = {
     require("neorg").setup {
       load = {
         ["core.defaults"] = {},
-        -- ["core.concealer"] = {},
-        ["core.concealer"] = {
-            config = { -- We added a `config` table!
-                icon_preset = "varied", -- And we set our option here.
-            },
-        },
+        ["core.concealer"] = {},
         ["core.dirman"] = {
           config = {
             workspaces = {
-              notes = "~/notes",
+              work = "~/org/work",
+              org = "~/org",
+              skogix = "~/org/skogix",
             },
-            default_workspace = "notes",
+            default_workspace = "org",
           },
         },
       },
