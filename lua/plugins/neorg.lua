@@ -13,8 +13,9 @@ local modules = {
   ['core.dirman'] = {
     config = {
       workspaces = {
-        notes = '~/wiki',
-        work = '~/work',
+        skogix = '~/org/skogix',
+        work = '~/org/work',
+        org = '~/org',
       },
       default_workspace = "notes",
     },
@@ -40,20 +41,32 @@ local M = {
     require("neorg").setup {
       load = {
         ["core.defaults"] = {},
+        ["core.ui"] = {},
+        -- ["core.ui.calender"] = {},
         -- ["core.concealer"] = {},
         ["core.concealer"] = {
             config = { -- We added a `config` table!
                 icon_preset = "varied", -- And we set our option here.
             },
         },
-        ["core.dirman"] = {
-          config = {
-            workspaces = {
-              notes = "~/notes",
-            },
-            default_workspace = "notes",
-          },
-        },
+  ['core.dirman'] = {
+    config = {
+      workspaces = {
+        skogix = '~/org/skogix',
+        work = '~/org/work',
+        org = '~/org',
+      },
+      default_workspace = "org",
+    },
+  },
+        -- ["core.dirman"] = {
+        --   config = {
+        --     workspaces = {
+        --       notes = "~/notes",
+        --     },
+        --     default_workspace = "notes",
+        --   },
+        -- },
       },
     }
     vim.wo.foldlevel = 99
